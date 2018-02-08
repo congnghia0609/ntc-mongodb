@@ -108,8 +108,10 @@ public class NIdGenDAO extends CommonDAO {
                 Document doc = dbSource.getCollection(TABLE_NAME).find(filter).first();
                 if(doc != null) {
 					mid = mapper.parseObject(doc);
-				}
-                ret = mid.getSeq();
+                    ret = mid.getSeq();
+				} else {
+                    ret = 0;
+                }
             } catch(final Exception e) {
 				logger.error("getMaxId ", e);
 			}

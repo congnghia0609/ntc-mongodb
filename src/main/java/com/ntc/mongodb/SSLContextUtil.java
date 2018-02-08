@@ -26,9 +26,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Security;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -102,14 +105,31 @@ public class SSLContextUtil {
 			throw new KeyStoreException("Keystore is empty; while this is legal for keystores in general, APNs clients must have at least one key.");
 		}
 
-		final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(algorithm);
-		trustManagerFactory.init(keyStore);
+		//final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(algorithm);
+		//trustManagerFactory.init(keyStore);
 
 		final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(algorithm);
 		keyManagerFactory.init(keyStore, keyStorePassword);
 
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[] {
+            new X509TrustManager() {
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[]{};
+                }
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+        };
+        
 		final SSLContext sslContext = SSLContext.getInstance(PROTOCOL);
-		sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+		//sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), null);
+        sslContext.init(keyManagerFactory.getKeyManagers(), trustAllCerts, null);
 
 		return sslContext;
 	}

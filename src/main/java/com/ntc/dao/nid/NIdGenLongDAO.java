@@ -108,8 +108,10 @@ public class NIdGenLongDAO extends CommonDAO {
                 Document doc = dbSource.getCollection(TABLE_NAME).find(filter).first();
                 if(doc != null) {
 					mid = mapper.parseObject(doc);
-				}
-                ret = mid.getSeq();
+                    ret = mid.getSeq();
+				} else{
+                    ret = 0;
+                }
             } catch(final Exception e) {
 				logger.error("getNext ", e);
 			}
@@ -145,15 +147,15 @@ public class NIdGenLongDAO extends CommonDAO {
 		}
 	}
     
-//    public static void main(String[] args) {
-//        MIdGenLongDAO nid = MIdGenLongDAO.getInstance("nghiaidLad");
-//        long maxId = nid.getMaxId();
-//        System.out.println("===============maxId: " + maxId);
-//        
-//        long nextId = nid.getNext();
-//        System.out.println("===============nextId: " + nextId);
-//        
-////        long maxId = nid.getMaxId();
-////        System.out.println("===============maxId: " + maxId);
-//    }
+    public static void main(String[] args) {
+        NIdGenLongDAO nid = NIdGenLongDAO.getInstance("nghiaid");
+        long maxId = nid.getMaxId();
+        System.out.println("===============maxId: " + maxId);
+        
+        long nextId = nid.getNext();
+        System.out.println("===============nextId: " + nextId);
+        
+        long maxId2 = nid.getMaxId();
+        System.out.println("===============maxId: " + maxId2);
+    }
 }

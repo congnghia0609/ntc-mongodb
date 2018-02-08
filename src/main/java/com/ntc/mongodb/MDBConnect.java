@@ -69,8 +69,8 @@ public class MDBConnect {
 	private MDBConnect() {
 		client = null;
 	}
-
-	private MDBConnect(String configName) throws Exception {
+    
+    private MDBConnect(String configName) throws Exception {
 		client = null;
 		List<MongoCredential> credential = new ArrayList<MongoCredential>();
 		List<ServerAddress> servers = new ArrayList<ServerAddress>();
@@ -97,11 +97,13 @@ public class MDBConnect {
 
 			MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder().connectionsPerHost(10).maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false);
 			
-			String keyFile = NConfig.getConfig().getString("mongodb.keyfile");
-			String keyPass = NConfig.getConfig().getString("mongodb.keypass");
+			String keyFile = NConfig.getConfig().getString(configName + ".mongodb.keyfile");
+			String keyPass = NConfig.getConfig().getString(configName + ".mongodb.keypass");
+            System.out.println("keyFile: " + keyFile);
+            System.out.println("keyPass: " + keyPass);
 
 			if (keyFile != null && keyPass != null) {
-				optionsBuilder.sslEnabled(true).socketFactory(SSLContextUtil.createDefaultSSLContext(keyFile, keyPass).getSocketFactory());
+				optionsBuilder.sslEnabled(true).sslInvalidHostNameAllowed(true).socketFactory(SSLContextUtil.createDefaultSSLContext(keyFile, keyPass).getSocketFactory());
 			}
 			
 			MongoClientOptions options = optionsBuilder.build();

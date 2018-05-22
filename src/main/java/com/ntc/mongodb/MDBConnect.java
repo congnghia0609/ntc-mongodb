@@ -76,7 +76,7 @@ public class MDBConnect {
 		List<ServerAddress> servers = new ArrayList<ServerAddress>();
 		final String hosts = NConfig.getConfig().getString(configName + ".mongodb.host");
 		if(hosts != null && !hosts.isEmpty()) {
-			String[] hostArr = hosts.split(",");
+			String[] hostArr = hosts.split(";");
 			for(String host : hostArr) {
 				String[] hostPort = host.split(":");
 				if(hostPort.length >= 2) {

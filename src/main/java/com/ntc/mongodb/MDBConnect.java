@@ -72,6 +72,7 @@ public class MDBConnect {
 
 	private MDBConnect(String configName) throws Exception {
 		client = null;
+        boolean strict = NConfig.getConfig().getBoolean(configName + ".mongodb.strict", false);
 		List<MongoCredential> credential = new ArrayList<MongoCredential>();
 		List<ServerAddress> servers = new ArrayList<ServerAddress>();
 		final String hosts = NConfig.getConfig().getString(configName + ".mongodb.host");
@@ -98,8 +99,13 @@ public class MDBConnect {
             System.out.println(configName + ".mongodb.max_connection: " + maxConnection);
 			MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder().connectionsPerHost(maxConnection)
                                                         .maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false)
-                                                        .retryWrites(true).writeConcern(WriteConcern.JOURNALED)
-                                                        .readPreference(ReadPreference.primaryPreferred());
+                                                        .retryWrites(true).writeConcern(WriteConcern.JOURNALED);
+            System.out.println(configName + ".mongodb.strict: " + strict);
+            if (strict) {
+                optionsBuilder.readPreference(ReadPreference.primaryPreferred());
+            } else {
+                optionsBuilder.readPreference(ReadPreference.secondaryPreferred());
+            }
 			
 			String keyFile = NConfig.getConfig().getString(configName + ".mongodb.keyfile");
 			String keyPass = NConfig.getConfig().getString(configName + ".mongodb.keypass");
@@ -114,7 +120,11 @@ public class MDBConnect {
 			MongoClientOptions options = optionsBuilder.build();
 			client = new MongoClient(servers, credential, options);
 			client.setWriteConcern(WriteConcern.JOURNALED);
-			client.setReadPreference(ReadPreference.secondaryPreferred());
+            if (strict) {
+                client.setReadPreference(ReadPreference.primaryPreferred());
+            } else {
+                client.setReadPreference(ReadPreference.secondaryPreferred());
+            }
 		}
 
 		if(client == null) {

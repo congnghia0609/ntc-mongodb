@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MDBConnect {
     private static final Logger logger = LoggerFactory.getLogger(MDBConnect.class);
-	private static final ConcurrentHashMap<String, MDBConnect> instanceMap = new ConcurrentHashMap<String, MDBConnect>(16, 0.9f, 16);
+	private static final ConcurrentHashMap<String, MDBConnect> instanceMap = new ConcurrentHashMap<String, MDBConnect>(125, 0.9f, 125);
 
 	private static Lock lock = new ReentrantLock();
 	private MongoClient client;

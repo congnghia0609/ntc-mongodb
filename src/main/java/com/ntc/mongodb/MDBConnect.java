@@ -72,6 +72,7 @@ public class MDBConnect {
 
 	private MDBConnect(String configName) throws Exception {
 		client = null;
+        boolean strict = NConfig.getConfig().getBoolean(configName + ".mongodb.strict", false);
 		List<MongoCredential> credential = new ArrayList<MongoCredential>();
 		List<ServerAddress> servers = new ArrayList<ServerAddress>();
 		final String hosts = NConfig.getConfig().getString(configName + ".mongodb.host");
@@ -94,9 +95,16 @@ public class MDBConnect {
 					credential.add(MongoCredential.createCredential(usp[1], usp[0], usp[2].toCharArray()));
 				}
 			}
-            int maxConnection = NConfig.getConfig().getInt(configName + ".mongodb.max_connection", 10);
+            int maxConnection = NConfig.getConfig().getInt(configName + ".mongodb.max_connection", 50);
             System.out.println(configName + ".mongodb.max_connection: " + maxConnection);
-			MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder().connectionsPerHost(maxConnection).maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false);
+			MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder().connectionsPerHost(maxConnection)
+                    .maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false).retryWrites(true)
+                    .writeConcern(WriteConcern.JOURNALED);
+            if (strict) {
+                optionsBuilder.readPreference(ReadPreference.primaryPreferred());
+            } else {
+                optionsBuilder.readPreference(ReadPreference.secondaryPreferred());
+            }
 			
 			String keyFile = NConfig.getConfig().getString(configName + ".mongodb.keyfile");
 			String keyPass = NConfig.getConfig().getString(configName + ".mongodb.keypass");
@@ -111,7 +119,11 @@ public class MDBConnect {
 			MongoClientOptions options = optionsBuilder.build();
 			client = new MongoClient(servers, credential, options);
 			client.setWriteConcern(WriteConcern.JOURNALED);
-			client.setReadPreference(ReadPreference.secondaryPreferred());
+			if (strict) {
+                client.setReadPreference(ReadPreference.primaryPreferred());
+            } else {
+                client.setReadPreference(ReadPreference.secondaryPreferred());
+            }
 		}
 
 		if(client == null) {

@@ -63,11 +63,37 @@ public class NIdGenLongDAO extends CommonDAO {
 
 		return instance;
 	}
+    
+    public static NIdGenLongDAO getInstance(String db, String name) {
+        if(db == null || db.isEmpty() || name == null || name.isEmpty()){
+            return null;
+        }
+        NIdGenLongDAO instance = mapNLID.containsKey(name) ? mapNLID.get(name) : null;
+		if(instance == null) {
+			lock.lock();
+			try {
+                instance = mapNLID.containsKey(name) ? mapNLID.get(name) : null;
+				if(instance == null) {
+					instance = new NIdGenLongDAO(db, name);
+                    mapNLID.put(name, instance);
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+
+		return instance;
+	}
 
 	private NIdGenLongDAO() {
 	}
     
     private NIdGenLongDAO(String name) {
+        this.name = name;
+	}
+    
+    private NIdGenLongDAO(String db, String name) {
+        super(db);
         this.name = name;
 	}
 

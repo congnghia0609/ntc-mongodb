@@ -63,11 +63,37 @@ public class NIdGenDAO extends CommonDAO {
 
 		return instance;
 	}
+    
+    public static NIdGenDAO getInstance(String db, String name) {
+        if(db == null || db.isEmpty() || name == null || name.isEmpty()){
+            return null;
+        }
+        NIdGenDAO instance = mapNID.containsKey(name) ? mapNID.get(name) : null;
+		if(instance == null) {
+			lock.lock();
+			try {
+                instance = mapNID.containsKey(name) ? mapNID.get(name) : null;
+				if(instance == null) {
+					instance = new NIdGenDAO(db, name);
+                    mapNID.put(name, instance);
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+
+		return instance;
+	}
 
 	private NIdGenDAO() {
 	}
     
     private NIdGenDAO(String name) {
+        this.name = name;
+	}
+    
+    private NIdGenDAO(String db, String name) {
+        super(db);
         this.name = name;
 	}
 

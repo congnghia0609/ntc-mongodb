@@ -173,15 +173,15 @@ public class NIdGenLongDAO extends CommonDAO {
 		}
 	}
     
-    public static void main(String[] args) {
-        NIdGenLongDAO nid = NIdGenLongDAO.getInstance("nghiaid");
-        long maxId = nid.getMaxId();
-        System.out.println("===============maxId: " + maxId);
-        
-        long nextId = nid.getNext();
-        System.out.println("===============nextId: " + nextId);
-        
-        long maxId2 = nid.getMaxId();
-        System.out.println("===============maxId: " + maxId2);
-    }
+//    public static void main(String[] args) {
+//        NIdGenLongDAO nid = NIdGenLongDAO.getInstance("nghiaid");
+//        long maxId = nid.getMaxId();
+//        System.out.println("===============maxId: " + maxId);
+//        
+//        long nextId = nid.getNext();
+//        System.out.println("===============nextId: " + nextId);
+//        
+//        long maxId2 = nid.getMaxId();
+//        System.out.println("===============maxId: " + maxId2);
+//    }
 }

@@ -53,6 +53,12 @@ public class SSLContextUtil {
 	 * @param keystorePassword the password to read the PKCS12 file; may be {@code null}
 	 *
 	 * @return an SSL context configured with the given client certificate and the JVM default trust managers
+     * @throws java.security.KeyStoreException KeyStoreException
+     * @throws java.security.NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws java.security.cert.CertificateException CertificateException
+     * @throws java.security.UnrecoverableKeyException UnrecoverableKeyException
+     * @throws java.security.KeyManagementException KeyManagementException
+     * @throws java.io.IOException IOException
 	 */
 	public static SSLContext createDefaultSSLContext(final String pathToPKCS12File, final String keystorePassword) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException, KeyManagementException, IOException {
 		final FileInputStream keystoreInputStream = new FileInputStream(pathToPKCS12File);
@@ -74,6 +80,12 @@ public class SSLContextUtil {
 	 * @param keystorePassword the password to read the PEM file; may be {@code null}
 	 *
 	 * @return an SSL context configured with the given client certificate and the JVM default trust managers
+     * @throws java.security.KeyStoreException KeyStoreException
+     * @throws java.security.NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws java.security.cert.CertificateException CertificateException
+     * @throws java.security.UnrecoverableKeyException UnrecoverableKeyException
+     * @throws java.security.KeyManagementException KeyManagementException
+     * @throws java.io.IOException IOException
 	 */
 	public static SSLContext createDefaultSSLContext(final InputStream keystoreInputStream, final String keystorePassword) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, UnrecoverableKeyException, KeyManagementException, IOException {
 		final KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -93,6 +105,10 @@ public class SSLContextUtil {
 	 * @param keyStorePassword a password to unlock the given {@code KeyStore}; may be {@code null}
 	 *
 	 * @return an SSL context configured with the certificates in the given keystore and the JVM default trust managers
+     * @throws java.security.KeyStoreException KeyStoreException
+     * @throws java.security.NoSuchAlgorithmException NoSuchAlgorithmException
+     * @throws java.security.UnrecoverableKeyException UnrecoverableKeyException
+     * @throws java.security.KeyManagementException KeyManagementException
 	 */
 	public static SSLContext createDefaultSSLContext(final KeyStore keyStore, final char[] keyStorePassword) throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException, KeyManagementException {
 		String algorithm = Security.getProperty("ssl.KeyManagerFactory.algorithm");

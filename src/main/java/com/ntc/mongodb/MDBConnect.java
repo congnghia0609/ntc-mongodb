@@ -98,8 +98,9 @@ public class MDBConnect {
             int maxConnection = NConfig.getConfig().getInt(configName + ".mongodb.max_connection", 50);
             System.out.println(configName + ".mongodb.max_connection: " + maxConnection);
 			MongoClientOptions.Builder optionsBuilder = MongoClientOptions.builder().connectionsPerHost(maxConnection)
-                    .maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false).retryWrites(true)
-                    .writeConcern(WriteConcern.JOURNALED);
+                                                        .maxConnectionIdleTime(60000).connectTimeout(60000).sslEnabled(false)
+                                                        .retryWrites(true).writeConcern(WriteConcern.JOURNALED);
+            System.out.println(configName + ".mongodb.strict: " + strict);
             if (strict) {
                 optionsBuilder.readPreference(ReadPreference.primaryPreferred());
             } else {
@@ -119,7 +120,7 @@ public class MDBConnect {
 			MongoClientOptions options = optionsBuilder.build();
 			client = new MongoClient(servers, credential, options);
 			client.setWriteConcern(WriteConcern.JOURNALED);
-			if (strict) {
+            if (strict) {
                 client.setReadPreference(ReadPreference.primaryPreferred());
             } else {
                 client.setReadPreference(ReadPreference.secondaryPreferred());

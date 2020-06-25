@@ -114,17 +114,17 @@ public class MDBConnect {
                 System.out.println(configName + ".mongodb.keyfile: " + keyFile);
                 System.out.println(configName + ".mongodb.keypass: " + keyPass);
 				//optionsBuilder.sslEnabled(true).socketFactory(SSLContextUtil.createDefaultSSLContext(keyFile, keyPass).getSocketFactory());
-                optionsBuilder.sslEnabled(true).sslInvalidHostNameAllowed(true).socketFactory(SSLContextUtil.createDefaultSSLContext(keyFile, keyPass).getSocketFactory());
+                optionsBuilder.sslEnabled(true).sslInvalidHostNameAllowed(true).sslContext(SSLContextUtil.createDefaultSSLContext(keyFile, keyPass));
 			}
 			
 			MongoClientOptions options = optionsBuilder.build();
 			client = new MongoClient(servers, credential, options);
-			client.setWriteConcern(WriteConcern.JOURNALED);
-            if (strict) {
-                client.setReadPreference(ReadPreference.primaryPreferred());
-            } else {
-                client.setReadPreference(ReadPreference.secondaryPreferred());
-            }
+//			client.setWriteConcern(WriteConcern.JOURNALED);
+//            if (strict) {
+//                client.setReadPreference(ReadPreference.primaryPreferred());
+//            } else {
+//                client.setReadPreference(ReadPreference.secondaryPreferred());
+//            }
 		}
 
 		if(client == null) {

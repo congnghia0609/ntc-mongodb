@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.streetcodevn</groupId>
     <artifactId>ntc-mongodb</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>ntc-mongodb</name>
-    <description>ntc-mongodb is module mongo java client</description>
+    <description>ntc-mongodb is a module mongo java client</description>
     <url>https://github.com/congnghia0609/ntc-mongodb</url>
     
     <properties>
@@ -61,27 +61,27 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
+            <version>1.7.30</version>
         </dependency>
-		<dependency>
-			<groupId>com.streetcodevn</groupId>
-			<artifactId>ntc-configuration</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>3.7.1</version>
+        <dependency>
+            <groupId>com.streetcodevn</groupId>
+            <artifactId>ntc-configuration</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.12.0</version>
         </dependency>
     </dependencies>
     
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
-		<plugins>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.1.0</version>
                 <configuration>
                     <filesets>
                         <fileset>
@@ -97,10 +97,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <showWarnings>true</showWarnings>
                 </configuration>
             </plugin>
@@ -137,7 +137,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.5</version>
+                <version>3.2.0</version>
                 <configuration>
                     <outputDirectory>${project.basedir}/dist/</outputDirectory>
                     <archive>
@@ -214,5 +214,5 @@
                 </configuration>
             </plugin>
         </plugins>
-	</build>
+    </build>
 </project>

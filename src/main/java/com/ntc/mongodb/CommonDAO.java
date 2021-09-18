@@ -32,14 +32,14 @@ public abstract class CommonDAO {
 		String configName = "ntc";
 		connect = MDBConnect.getInstance(configName);
 		if(connect != null) {
-			dbSource = getConnect().getClient().getDatabase(NConfig.getConfig().getString(configName + ".mongodb.db"));
+			dbSource = connect.getClient().getDatabase(NConfig.getConfig().getString(configName + ".mongodb.db"));
 		}
 	}
 
 	public CommonDAO(String configName) {
 		connect = MDBConnect.getInstance(configName);
 		if(connect != null) {
-			dbSource = getConnect().getClient().getDatabase(NConfig.getConfig().getString(configName + ".mongodb.db"));
+			dbSource = connect.getClient().getDatabase(NConfig.getConfig().getString(configName + ".mongodb.db"));
 		}
 	}
 
